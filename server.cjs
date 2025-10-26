@@ -88,6 +88,20 @@ server.get('/api/leaderboard', (req, res) => {
   });
 });
 
+// Links for convenience to each endpoint
+server.get('/', (req, res) => {
+  res.send(`
+    <h1>🐾 Pawse API</h1>
+    <p>This internal API powers feed ranking and leaderboard data for the Pawse app.</p>
+    <ul>
+      <li><a href="/api/friends-feed">/api/friends-feed</a> – Ranked feed for friends</li>
+      <li><a href="/api/contest-feed">/api/contest-feed</a> – Ranked feed for contest entries</li>
+      <li><a href="/api/leaderboard">/api/leaderboard</a> – Top 3 contest results (daily)</li>
+    </ul>
+    <p><em>Powered by JSON Server + Render</em></p>
+  `);
+});
+
 // Make sure JSON Server router loads last
 server.use('/api', router);
 
