@@ -2,18 +2,96 @@ const jsonServer = require('json-server');
 const server = jsonServer.create();
 
 // ------------------------------------------------------------------
-// ⭐ LANDING PAGE FIX (Move to the top) ⭐
+// ⭐ LANDING PAGE ⭐
 // ------------------------------------------------------------------
 server.get('/', (req, res) => {
   res.send(`
-    <h1>🐾 Pawse API</h1>
-    <p>This internal API powers feed ranking and leaderboard data for the Pawse app.</p>
-    <ul>
-      <li><a href="/api/friends-feed">/api/friends-feed</a> – Ranked feed for friends</li>
-      <li><a href="/api/contest-feed">/api/contest-feed</a> – Ranked feed for contest entries</li>
-      <li><a href="/api/leaderboard">/api/leaderboard</a> – Top 3 contest results (daily)</li>
-    </ul>
-    <p><em>Powered by JSON Server + Render</em></p>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pawse API Documentation 🐾</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+            h1 { border-bottom: 2px solid #ccc; padding-bottom: 10px; }
+            h2 { color: #333; margin-top: 30px; }
+            .section { border: 1px solid #eee; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+            .nav-links a { margin-right: 15px; text-decoration: none; color: #007bff; }
+            .nav-links a:hover { text-decoration: underline; }
+            code { background-color: #f4f4f4; padding: 2px 4px; border-radius: 3px; }
+            .formula { background-color: #e0f7fa; border-left: 5px solid #00bcd4; padding: 10px; margin-top: 10px; font-style: italic; }
+        </style>
+    </head>
+    <body>
+        <h1>Pawse API Documentation 🐾</h1>
+        <p>This API provides ranked feed and leaderboard data for the Pawse mobile app.</p>
+        <div class="nav-links">
+            <a href="/api/friends-feed">Friends Feed</a> | 
+            <a href="/api/contest-feed">Contest Feed</a> | 
+            <a href="/api/leaderboard">Leaderboard</a> |
+            <a href="/db">View Raw Database (db.json)</a>
+        </div>
+
+        <hr>
+
+        <h2>📄 Endpoints Explained</h2>
+
+        <div class="section">
+            <h3>1. <code>/api/friends-feed</code></h3>
+            <p>Returns a dynamically ranked list of friends’ posts. This ranking prioritizes engagement and recency:</p>
+            <ul>
+                <li>**Engagement:** <code>votes_from_friends</code> is heavily weighted (×2).</li>
+                <li>**Recency:** Newer posts are ranked higher using a time-decay factor.</li>
+                <li>**Freshness:** A small <code>randomness</code> factor is added to ensure posts get equal exposure over time.</li>
+            </ul>
+            <h4>Formula Details</h4>
+            <div class="formula">
+                Score = (votes\_from\_friends &times; 2) + Recency Factor + Randomness
+                <br>
+                Recency Factor = MAX(0, 10 - Days Old) 
+                <br>
+                <small>*(The post's recency score decays after 10 days)*</small>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>2. <code>/api/contest-feed</code></h3>
+            <p>Returns ranked contest submissions. This is a competition-focused ranking:</p>
+            <ul>
+                <li>**Competition:** <code>votes_from_contest</code> is highly weighted (×3).</li>
+                <li>**Recency:** Recent entries receive a temporary score boost.</li>
+                <li>**Fairness:** Includes a <code>randomness</code> factor to help entries move slightly within their vote tier.</li>
+            </ul>
+            <h4>Formula Details</h4>
+            <div class="formula">
+                Score = (votes\_from\_contest &times; 3) + Recency Factor + Randomness
+                <br>
+                Recency Factor = MAX(0, 5 - Days Old)
+                <br>
+                <small>*(The entry's recency score decays after 5 days)*</small>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>3. <code>/api/leaderboard</code></h3>
+            <p>Calculates the scores for all contest entries using the **Contest Feed formula** and provides the top 3 results. This endpoint enriches the data by performing a **data join** to include the pet's photo and the owner's nickname.</p>
+            <p>The leaderboard is intended to be refreshed daily (<code>everynight at 23:59</code>, as per your DB diagram notes) to reflect the day's winners.</p>
+        </div>
+
+        <hr>
+
+        <h2>⚙️ Deployment & Maintainer Info</h2>
+        <p><strong>Base URL:</strong> https://pawse-api-temp.onrender.com</p>
+        <ul>
+            <li>**Hosting:** Deployed via <a href="https://render.com">Render</a> (Free Instance).</li>
+            <li>**Technology:** Powered by <code>json-server</code> (running on an Express instance).</li>
+            <li>**Maintainer:** Sophia Zhu</li>
+            <li>**Updated:** October 26, 2025</li>
+            <li>**Note:** The free Render instance may spin down after inactivity; initial load may take up to 50 seconds.</li>
+        </ul>
+    </body>
+    </html>
   `);
 });
 
@@ -106,7 +184,7 @@ server.get('/api/leaderboard', (req, res) => {
 });
 
 // Make sure JSON Server router loads last
-server.use('/api', router);
+server.use('/db', router);
 
 server.listen(3000, () => {
   console.log('Pawse API running on port 3000 🐾');
