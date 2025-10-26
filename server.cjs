@@ -31,7 +31,7 @@ server.get('/', (req, res) => {
     </head>
     <body>
         <h1>Pawse API Documentation 🐾</h1>
-        <p>This API provides ranked feed and leaderboard data for the Pawse mobile app.</p>
+        <p>This is the internal API for Sprint 3, which provides ranked feed and leaderboard data for the Pawse mobile app.</p>
         <div class="nav-links">
             <a href="/api/friends-feed">Friends Feed</a> | 
             <a href="/api/contest-feed">Contest Feed</a> | 
@@ -47,9 +47,9 @@ server.get('/', (req, res) => {
             <h3>1. <code>/api/friends-feed</code></h3>
             <p>Returns a dynamically ranked list of friends’ posts. This ranking prioritizes engagement and recency:</p>
             <ul>
-                <li>**Engagement:** <code>votes_from_friends</code> is heavily weighted (×2).</li>
-                <li>**Recency:** Newer posts are ranked higher using a time-decay factor.</li>
-                <li>**Freshness:** A small <code>randomness</code> factor is added to ensure posts get equal exposure over time.</li>
+                <li>Engagement: <code>votes_from_friends</code> is heavily weighted (×2).</li>
+                <li>Recency: Newer posts are ranked higher using a time-decay factor.</li>
+                <li>Freshness: A small <code>randomness</code> factor is added to ensure posts get equal exposure over time.</li>
             </ul>
             <h4>Formula Details</h4>
             <div class="formula">
@@ -65,9 +65,9 @@ server.get('/', (req, res) => {
             <h3>2. <code>/api/contest-feed</code></h3>
             <p>Returns ranked contest submissions. This is a competition-focused ranking:</p>
             <ul>
-                <li>**Competition:** <code>votes_from_contest</code> is highly weighted (×3).</li>
-                <li>**Recency:** Recent entries receive a temporary score boost.</li>
-                <li>**Fairness:** Includes a <code>randomness</code> factor to help entries move slightly within their vote tier.</li>
+                <li>Competition: <code>votes_from_contest</code> is highly weighted (×3).</li>
+                <li>Recency: Recent entries receive a temporary score boost.</li>
+                <li>Fairness: Includes a <code>randomness</code> factor to help entries move slightly within their vote tier.</li>
             </ul>
             <h4>Formula Details</h4>
             <div class="formula">
@@ -95,11 +95,11 @@ server.get('/', (req, res) => {
         <h2>⚙️ Deployment & Maintainer Info</h2>
         <p><strong>Base URL:</strong> https://pawse-api-temp.onrender.com</p>
         <ul>
-            <li>**Hosting:** Deployed via <a href="https://render.com">Render</a> (Free Instance).</li>
-            <li>**Technology:** Powered by <code>json-server</code> (running on an Express instance).</li>
-            <li>**Maintainer:** Sophia Zhu</li>
-            <li>**Updated:** October 26, 2025</li>
-            <li>**Note:** The free Render instance may spin down after inactivity; initial load may take up to 50 seconds.</li>
+            <li>Hosting: Deployed via <a href="https://render.com">Render</a> (Free Instance).</li>
+            <li>Technology: Powered by <code>json-server</code> (running on an Express instance).</li>
+            <li>Maintainer: Pawse Team </li>
+            <li>Updated: October 26, 2025</li>
+            <li>Note: The free Render instance may spin down after inactivity; initial load may take up to 50 seconds.</li>
         </ul>
     </body>
     </html>
