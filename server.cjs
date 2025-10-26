@@ -1,5 +1,22 @@
 const jsonServer = require('json-server');
 const server = jsonServer.create();
+
+// ------------------------------------------------------------------
+// ⭐ LANDING PAGE FIX (Move to the top) ⭐
+// ------------------------------------------------------------------
+server.get('/', (req, res) => {
+  res.send(`
+    <h1>🐾 Pawse API</h1>
+    <p>This internal API powers feed ranking and leaderboard data for the Pawse app.</p>
+    <ul>
+      <li><a href="/api/friends-feed">/api/friends-feed</a> – Ranked feed for friends</li>
+      <li><a href="/api/contest-feed">/api/contest-feed</a> – Ranked feed for contest entries</li>
+      <li><a href="/api/leaderboard">/api/leaderboard</a> – Top 3 contest results (daily)</li>
+    </ul>
+    <p><em>Powered by JSON Server + Render</em></p>
+  `);
+});
+
 const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
 server.use(middlewares);
@@ -86,21 +103,6 @@ server.get('/api/leaderboard', (req, res) => {
     leaderboard_updated: new Date().toISOString(),
     top_entries: topThree
   });
-});
-
-// ---------- CUSTOM LANDING PAGE (Should now work) ----------
-server.get('/', (req, res) => {
-  res.send(`
-    <h1>🐾 Pawse API</h1>
-    <p>This internal API powers feed ranking and leaderboard data for the Pawse app.</p>
-    <ul>
-      <li><a href="/api/friends-feed">/api/friends-feed</a> – Ranked feed for friends</li>
-      <li><a href="/api/contest-feed">/api/contest-feed</a> – Ranked feed for contest entries</li>
-      <li><a href="/api/leaderboard">/api/leaderboard</a> – Top 3 contest results (daily)</li>
-      <li><a href="/api">/api</a> – JSON Server Resources Overview</li>
-    </ul>
-    <p><em>Powered by JSON Server + Render</em></p>
-  `);
 });
 
 // Make sure JSON Server router loads last
