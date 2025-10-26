@@ -1,0 +1,126 @@
+{
+  "friends_feed": [
+    {
+      "nick_name": "Jenna",
+      "pet_name": "Noodle",
+      "photo_url": "https://pawse.app/noodle.jpg",
+      "votes_from_friends": 18,
+      "posted_at": "2025-10-25T18:00:00Z"
+    },
+    {
+      "nick_name": "Leo",
+      "pet_name": "Rex",
+      "photo_url": "https://pawse.app/rex.jpg",
+      "votes_from_friends": 21,
+      "posted_at": "2025-10-24T20:00:00Z"
+    },
+    {
+      "nick_name": "Rina",
+      "pet_name": "Mochi",
+      "photo_url": "https://pawse.app/mochi.jpg",
+      "votes_from_friends": 16,
+      "posted_at": "2025-10-26T10:30:00Z"
+    },
+    {
+      "nick_name": "Amir",
+      "pet_name": "Loki",
+      "photo_url": "https://pawse.app/loki.jpg",
+      "votes_from_friends": 22,
+      "posted_at": "2025-10-25T14:15:00Z"
+    },
+    {
+      "nick_name": "Sophie",
+      "pet_name": "Whiskers",
+      "photo_url": "https://pawse.app/whiskers.jpg",
+      "votes_from_friends": 19,
+      "posted_at": "2025-10-26T08:50:00Z"
+    },
+    {
+      "nick_name": "Maya",
+      "pet_name": "Pebble",
+      "photo_url": "https://pawse.app/pebble.jpg",
+      "votes_from_friends": 17,
+      "posted_at": "2025-10-25T09:40:00Z"
+    },
+    {
+      "nick_name": "Caleb",
+      "pet_name": "Toby",
+      "photo_url": "https://pawse.app/toby.jpg",
+      "votes_from_friends": 20,
+      "posted_at": "2025-10-23T17:00:00Z"
+    },
+    {
+      "nick_name": "Hana",
+      "pet_name": "Muffin",
+      "photo_url": "https://pawse.app/muffin.jpg",
+      "votes_from_friends": 15,
+      "posted_at": "2025-10-26T12:00:00Z"
+    },
+    {
+      "nick_name": "Ava",
+      "pet_name": "Sprout",
+      "photo_url": "https://pawse.app/sprout.jpg",
+      "votes_from_friends": 18,
+      "posted_at": "2025-10-25T22:10:00Z"
+    },
+    {
+      "nick_name": "Noah",
+      "pet_name": "Clover",
+      "photo_url": "https://pawse.app/clover.jpg",
+      "votes_from_friends": 19,
+      "posted_at": "2025-10-24T09:00:00Z"
+    }
+  ],
+  "contest_feed": [
+    {
+      "pet_name": "Peach",
+      "votes_from_contest": 480,
+      "submitted_at": "2025-10-25T10:00:00Z"
+    },
+    {
+      "pet_name": "Milo",
+      "votes_from_contest": 490,
+      "submitted_at": "2025-10-25T12:00:00Z"
+    },
+    {
+      "pet_name": "Luna",
+      "votes_from_contest": 475,
+      "submitted_at": "2025-10-25T17:30:00Z"
+    },
+    {
+      "pet_name": "Noodle",
+      "votes_from_contest": 460,
+      "submitted_at": "2025-10-25T08:00:00Z"
+    },
+    {
+      "pet_name": "Toby",
+      "votes_from_contest": 470,
+      "submitted_at": "2025-10-25T14:00:00Z"
+    },
+    {
+      "pet_name": "Mochi",
+      "votes_from_contest": 465,
+      "submitted_at": "2025-10-25T18:00:00Z"
+    },
+    {
+      "pet_name": "Whiskers",
+      "votes_from_contest": 485,
+      "submitted_at": "2025-10-25T16:45:00Z"
+    },
+    {
+      "pet_name": "Clover",
+      "votes_from_contest": 455,
+      "submitted_at": "2025-10-25T20:15:00Z"
+    },
+    {
+      "pet_name": "Pebble",
+      "votes_from_contest": 462,
+      "submitted_at": "2025-10-25T09:30:00Z"
+    },
+    {
+      "pet_name": "Sprout",
+      "votes_from_contest": 458,
+      "submitted_at": "2025-10-25T13:45:00Z"
+    }
+  ]
+}
