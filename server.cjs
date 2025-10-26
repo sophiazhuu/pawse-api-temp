@@ -88,7 +88,9 @@ server.get('/api/leaderboard', (req, res) => {
   });
 });
 
-server.use(router);
+// Make sure JSON Server router loads last
+server.use('/api', router);
+
 server.listen(3000, () => {
   console.log('Pawse API running on port 3000 🐾');
 });
