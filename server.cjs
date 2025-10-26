@@ -1,4 +1,6 @@
 const jsonServer = require('json-server');
+// 🚨 NEW REQUIREMENT: File System module for direct file access
+const fs = require('fs'); 
 const server = jsonServer.create();
 
 // Now initialize the router and middlewares
@@ -85,7 +87,7 @@ server.get('/', (req, res) => {
         
         <div class="section">
             <h3>4. <code>/db/raw</code></h3>
-            <p>Returns the entire contents of the in-memory database (<code>db.json</code>) as raw JSON.</p>
+            <p>Returns the entire contents of the database file (<code>db.json</code>) as raw JSON, bypassing the in-memory state for reliability.</p>
         </div>
 
         <hr>
@@ -107,14 +109,23 @@ server.get('/', (req, res) => {
 server.use(middlewares); 
 
 // ------------------------------------------------------------------
-// ⭐ NEW FIX: EXPLICIT RAW DB DUMP ENDPOINT ⭐
+// ⭐ THE FINAL FIX: EXPLICIT RAW DB FILE READ ⭐
 // ------------------------------------------------------------------
 server.get('/db/raw', (req, res) => {
-    res.json(router.db.getState());
+    try {
+        // Read the file synchronously to ensure we get the content
+        const data = fs.readFileSync('./db.json', 'utf8');
+        res.setHeader('Content-Type', 'application/json');
+        res.send(data);
+    } catch (error) {
+        // In case the file doesn't exist or is unreadable
+        console.error("Error reading db.json:", error);
+        res.status(500).json({ error: "Could not read db.json file.", detail: error.message });
+    }
 });
 
 // ------------------------------------------------------------------
-// ⭐ REUSABLE SCORING FUNCTIONS
+// ⭐ REUSABLE SCORING FUNCTIONS & API ENDPOINTS (No Change)
 // ------------------------------------------------------------------
 
 // Function for Friends Feed ranking
@@ -136,10 +147,6 @@ const calculateContestScore = (entry) => {
   const score = votesScore + recencyFactor + randomness;
   return { ...entry, score };
 };
-
-// ------------------------------------------------------------------
-// 🚀 API ENDPOINTS
-// ------------------------------------------------------------------
 
 server.get('/api/friends-feed', (req, res) => {
   const data = router.db.get('friends_feed').value();
@@ -189,12 +196,6 @@ server.get('/api/leaderboard', (req, res) => {
     top_entries: topThree
   });
 });
-
-// Since custom /api routes are handled above, we don't need to mount the JSON Server router at all
-// unless you want to use its RESTful resource creation/deletion features.
-// If not, leave it out. For now, it's removed for simplicity and stability.
-// If you want standard JSON Server resource endpoints like /friends_feed, you would add:
-// server.use(router); 
 
 server.listen(3000, () => {
   console.log('Pawse API running on port 3000 🐾');
