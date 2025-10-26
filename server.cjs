@@ -88,7 +88,7 @@ server.get('/api/leaderboard', (req, res) => {
   });
 });
 
-// Links for convenience to each endpoint
+// ---------- CUSTOM LANDING PAGE (Should now work) ----------
 server.get('/', (req, res) => {
   res.send(`
     <h1>🐾 Pawse API</h1>
@@ -97,6 +97,7 @@ server.get('/', (req, res) => {
       <li><a href="/api/friends-feed">/api/friends-feed</a> – Ranked feed for friends</li>
       <li><a href="/api/contest-feed">/api/contest-feed</a> – Ranked feed for contest entries</li>
       <li><a href="/api/leaderboard">/api/leaderboard</a> – Top 3 contest results (daily)</li>
+      <li><a href="/api">/api</a> – JSON Server Resources Overview</li>
     </ul>
     <p><em>Powered by JSON Server + Render</em></p>
   `);
