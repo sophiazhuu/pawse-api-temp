@@ -82,7 +82,7 @@ server.get('/', (req, res) => {
         <div class="section">
             <h3>3. <code>/api/leaderboard</code></h3>
             <p>Calculates the scores for all contest entries using the **Contest Feed formula** and provides the top 3 results. This endpoint enriches the data by performing a **data join** to include the pet's photo and the owner's nickname.</p>
-            <p>The leaderboard is intended to be refreshed daily (<code>everynight at 23:59</code>, as per your DB diagram notes) to reflect the day's winners.</p>
+            <p>The leaderboard is intended to be refreshed daily (<code>everynight at 23:59</code) to reflect the day's winners.</p>
         </div>
         
         <div class="section">
