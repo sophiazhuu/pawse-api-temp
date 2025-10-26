@@ -1,8 +1,12 @@
 const jsonServer = require('json-server');
 const server = jsonServer.create();
 
+// Now initialize the router and middlewares
+const router = jsonServer.router('db.json');
+const middlewares = jsonServer.defaults();
+
 // ------------------------------------------------------------------
-// ⭐ LANDING PAGE ⭐
+// ⭐ LANDING PAGE FIX (Must come before middleware) ⭐
 // ------------------------------------------------------------------
 server.get('/', (req, res) => {
   res.send(`
@@ -30,7 +34,7 @@ server.get('/', (req, res) => {
             <a href="/api/friends-feed">Friends Feed</a> | 
             <a href="/api/contest-feed">Contest Feed</a> | 
             <a href="/api/leaderboard">Leaderboard</a> |
-            <a href="/db">View Raw Database (db.json)</a>
+            <a href="/db/raw">View Raw Database (db.json)</a>
         </div>
 
         <hr>
@@ -78,6 +82,11 @@ server.get('/', (req, res) => {
             <p>Calculates the scores for all contest entries using the **Contest Feed formula** and provides the top 3 results. This endpoint enriches the data by performing a **data join** to include the pet's photo and the owner's nickname.</p>
             <p>The leaderboard is intended to be refreshed daily (<code>everynight at 23:59</code>, as per your DB diagram notes) to reflect the day's winners.</p>
         </div>
+        
+        <div class="section">
+            <h3>4. <code>/db/raw</code></h3>
+            <p>Returns the entire contents of the in-memory database (<code>db.json</code>) as raw JSON.</p>
+        </div>
 
         <hr>
 
@@ -95,9 +104,14 @@ server.get('/', (req, res) => {
   `);
 });
 
-const router = jsonServer.router('db.json');
-const middlewares = jsonServer.defaults();
-server.use(middlewares);
+server.use(middlewares); 
+
+// ------------------------------------------------------------------
+// ⭐ NEW FIX: EXPLICIT RAW DB DUMP ENDPOINT ⭐
+// ------------------------------------------------------------------
+server.get('/db/raw', (req, res) => {
+    res.json(router.db.getState());
+});
 
 // ------------------------------------------------------------------
 // ⭐ REUSABLE SCORING FUNCTIONS
@@ -127,7 +141,6 @@ const calculateContestScore = (entry) => {
 // 🚀 API ENDPOINTS
 // ------------------------------------------------------------------
 
-// Custom endpoint for feed ranking
 server.get('/api/friends-feed', (req, res) => {
   const data = router.db.get('friends_feed').value();
   const ranked = data.map(calculateFriendsFeedScore).sort((a, b) => b.score - a.score);
@@ -140,12 +153,10 @@ server.get('/api/contest-feed', (req, res) => {
   res.json(ranked);
 });
 
-// ---------- LEADERBOARD (Top 3 Contest Entries) - ENHANCED WITH JOIN ----------
 server.get('/api/leaderboard', (req, res) => {
   const contestData = router.db.get('contest_feed').value();
   const friendsData = router.db.get('friends_feed').value();
 
-  // 1. Create a quick lookup map for owner/photo details from friends_feed
   const petDetailsMap = friendsData.reduce((map, item) => {
     map[item.pet_name] = {
       nick_name: item.nick_name,
@@ -154,22 +165,18 @@ server.get('/api/leaderboard', (req, res) => {
     return map;
   }, {});
   
-  // 2. Calculate scores and join data
   const ranked = contestData
-    .map(calculateContestScore) // Calculate score
-    .sort((a, b) => b.score - a.score); // Sort by score
+    .map(calculateContestScore) 
+    .sort((a, b) => b.score - a.score);
 
-  // 3. Limit to top 3 and structure the final response
   const topThree = ranked.slice(0, 3).map((entry, index) => {
-    const details = petDetailsMap[entry.pet_name] || {}; // Get linked details
+    const details = petDetailsMap[entry.pet_name] || {}; 
     
     return {
       rank: index + 1,
       pet_name: entry.pet_name,
-      // Enhanced fields from the 'join'
       owner_nickname: details.nick_name || 'N/A', 
       photo_url: details.photo_url || 'https://pawse.app/default.jpg',
-      // Contest specific fields
       votes: entry.votes_from_contest,
       score: entry.score,
       submitted_at: entry.submitted_at
@@ -183,8 +190,11 @@ server.get('/api/leaderboard', (req, res) => {
   });
 });
 
-// Make sure JSON Server router loads last
-server.use('/db', router);
+// Since custom /api routes are handled above, we don't need to mount the JSON Server router at all
+// unless you want to use its RESTful resource creation/deletion features.
+// If not, leave it out. For now, it's removed for simplicity and stability.
+// If you want standard JSON Server resource endpoints like /friends_feed, you would add:
+// server.use(router); 
 
 server.listen(3000, () => {
   console.log('Pawse API running on port 3000 🐾');
